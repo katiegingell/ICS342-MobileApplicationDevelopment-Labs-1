@@ -61,7 +61,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             LabsTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
                     /*Greeting("Android")*/
                     DataItemList(dataItems)
                 }
@@ -81,11 +84,12 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun DataItemView(dataItem: DataItem) {
     /* Create the view for the data item her. */
-    var showDialog by remember { mutableStateOf( false) }
+    var showDialog by remember { mutableStateOf(false) }
     Row(
-        Modifier.clickable { showDialog = true  }
+        Modifier
+            .clickable { showDialog = true }
             .height(56.dp)
-            .fillMaxWidth()){
+            .fillMaxWidth()) {
         Text(text = dataItem.id.toString())
         Spacer(modifier = Modifier.size(8.dp))
         Column() {
@@ -96,14 +100,16 @@ fun DataItemView(dataItem: DataItem) {
 
     }
 
-    if (showDialog){
+    if (showDialog) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
             title = { Text(text = dataItem.name) },
             text = { Text(text = dataItem.description) },
-            confirmButton = { Button(onClick = { showDialog = false }) {
-                Text(text = "Okay")
-            }},
+            confirmButton = {
+                Button(onClick = { showDialog = false }) {
+                    Text(text = "Okay")
+                }
+            },
         )
 
 
@@ -113,8 +119,8 @@ fun DataItemView(dataItem: DataItem) {
 @Composable
 fun DataItemList(dataItems: List<DataItem>) {
     /* Create the list here. This function will call DataItemView() */
-    LazyColumn{
-        items(items = dataItems){
+    LazyColumn {
+        items(items = dataItems) {
             DataItemView(dataItem = it)
         }
     }
