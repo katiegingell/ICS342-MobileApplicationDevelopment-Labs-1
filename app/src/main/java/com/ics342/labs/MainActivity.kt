@@ -38,8 +38,8 @@ class MainActivity : ComponentActivity() {
             // The ManagedActivityResultLauncher for handling requesting permission
             val launcher = rememberLauncherForActivityResult(
                 contract = RequestPermission()
-            ){granted ->
-                if (granted){
+            ) { granted ->
+                if (granted) {
                     hasPermission = true
                 } else {
                     showPermissionRationale = true
@@ -48,17 +48,24 @@ class MainActivity : ComponentActivity() {
 
             LabsTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 
                         // if permission has been granted, show the LocationView
-                        if (hasPermission){
+                        if (hasPermission) {
                             LocationView()
                         }
                         // else if permission has not been granted, show a button to to request permission
                         else {
                             Button(onClick = {
-                                checkOrRequestPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION, launcher){
+                                checkOrRequestPermission(
+                                    context,
+                                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                                    launcher
+                                ) {
                                     hasPermission = true
                                 }
                             }) {
@@ -68,10 +75,14 @@ class MainActivity : ComponentActivity() {
                         // --------
 
                         // if user has denied permission and we should show the rationale, show the dialog
-                        if (showPermissionRationale){
+                        if (showPermissionRationale) {
                             PermissionRationaleDialog(onConfirm = {
                                 showPermissionRationale = false
-                                checkOrRequestPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION, launcher){ hasPermission = true }
+                                checkOrRequestPermission(
+                                    context,
+                                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                                    launcher
+                                ) { hasPermission = true }
                             }) {
                                 showPermissionRationale = false
                             }
@@ -124,7 +135,7 @@ private fun checkOrRequestPermission(
     val permissionCheckResult = ContextCompat.checkSelfPermission(context, permission)
 
     // if permission is granted, call the permission granted function
-    if (permissionCheckResult == PackageManager.PERMISSION_GRANTED){
+    if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
         permissionGranted()
     }
     // if permission is not granted, launch the launcher for the permission
