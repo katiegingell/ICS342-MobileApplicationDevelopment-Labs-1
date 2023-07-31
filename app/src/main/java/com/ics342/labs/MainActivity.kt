@@ -42,7 +42,10 @@ class MainActivity : ComponentActivity() {
             }
             LabsTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Button(
                             onClick = {
@@ -62,7 +65,9 @@ class MainActivity : ComponentActivity() {
 }
 
 fun startNotificationService(context: Context) {
-    TODO("Start the Notification Service")
+    // "Start the Notification Service"
+    val intent = Intent(context, NotificationService::class.java)
+    context.startService(intent)
 }
 
 private fun checkOrRequestPermission(
@@ -74,7 +79,8 @@ private fun checkOrRequestPermission(
         ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.POST_NOTIFICATIONS
-        ) == PackageManager.PERMISSION_GRANTED) {
+        ) == PackageManager.PERMISSION_GRANTED
+    ) {
         permissionGranted()
     } else {
         launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
