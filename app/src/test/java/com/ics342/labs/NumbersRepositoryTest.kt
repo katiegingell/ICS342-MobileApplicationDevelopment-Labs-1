@@ -1,6 +1,8 @@
 package com.ics342.labs
 
+import io.mockk.Runs
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
@@ -35,6 +37,23 @@ internal class NumbersRepositoryTest {
 
     @Test
     fun ifDatabaseIsEmptyShouldFetchNumbersFromApi() {
-        // TODO: implement this test
+        // implement this test
+        val database = mockk<Database>()
+        val api = mockk<Api>()
+        val number = Number(UUID.randomUUID().toString(), Random.nextInt())
+
+        every { database.getAllNumbers() } returns emptyList()
+        every { api.getNumbers() } returns listOf(number)
+        every { database.storeNumbers(listOf(number)) } just Runs
+
+        val repository = NumbersRepository(database, api)
+        val result = repository.fetchNumbers()
+
+        assertNotNull(result)
+        assertEquals(listOf(number), repository.fetchNumbers())
+
+        verify { database.getAllNumbers() }
+        verify { api.getNumbers() }
+        verify { database.storeNumbers(result) }
     }
 }
